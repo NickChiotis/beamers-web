@@ -9,25 +9,25 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: Install Node.js
-        uses: actions/setup-node@v3
+      # --- ΑΥΤΟ ΕΙΝΑΙ ΤΟ ΚΡΙΣΙΜΟ ΒΗΜΑ ΠΟΥ ΛΕΙΠΕΙ ---
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '22' # Θα χρησιμοποιήσει την τελευταία σταθερή έκδοση 22
 
-      - name: Install dependencies & Build
+      - name: Install & Build
         run: |
           npm install
           npm run build
 
-      - name: Deploy to Server via SSH
-        uses: appleboy/ssh-action@master
+      - name: Copy Files to Server
+        uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.SERVER_IP }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            # Καθαρίζουμε τον παλιό φάκελο
-            sudo rm -rf /var/www/thebeamers/*
-            # Εδώ θα χρειαστούμε μια εντολή για να φέρουμε τα αρχεία του build
+          source: "dist/*"
+          target: "/var/www/thebeamers"
+          strip_components: 1
