@@ -1,19 +1,1 @@
-name: Deploy Website
-on:
-  push:
-    branches:
-      - main  # Ή master, ανάλογα πώς λέγεται το branch σου
 
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Deploy via SSH
-        uses: appleboy/ssh-action@master
-        with:
-          host: 130.162.245.227
-          username: ubuntu
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            cd /var/www/thebeamers
-            sudo git pull
