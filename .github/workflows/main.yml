@@ -16,6 +16,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22' # Θα χρησιμοποιήσει την τελευταία σταθερή έκδοση 22
+          cache: 'npm'  # Προαιρετικό: κάνει το install πιο γρήγορο
 
       - name: Install & Build
         run: |
