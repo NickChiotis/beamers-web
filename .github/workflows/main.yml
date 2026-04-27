@@ -1,0 +1,22 @@
+name: Deploy Website
+on:
+  push:
+    branches:
+      - main  # Αν το branch σου λέγεται master, άλλαξέ το σε master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Executing remote ssh commands
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /var/www/thebeamers
+            sudo git fetch origin main
+            sudo git reset --hard origin/main
+            sudo chown -R ubuntu:ubuntu /var/www/thebeamers
+            sudo chmod -R 755 /var/www/thebeamers
