@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getGalleryImages } from './fileService';
+import { getGalleryImages } from './FileService';
 
 const SyndicateGallery = () => {
   const [images, setImages] = useState([]);
